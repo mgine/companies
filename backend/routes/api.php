@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CompaniesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+Route::apiResource('companies', CompaniesController::class, ['except' => 'destroy', 'names' => 'companies']);
+
+Route::get('company/statuses', function (){
+
+    $ret = [];
+
+    foreach (\App\Enums\CompanyStatus::cases() as $status){
+        $ret[] = [
+            'name' => $status->value
+        ];
+    }
+
+    return $ret;
 });
